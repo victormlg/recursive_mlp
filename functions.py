@@ -20,3 +20,9 @@ def softmax_derivative(a) :
 
 def MCE_to_softmax_derivative(y,t) :
     return y-t
+
+def ReLU(x) :
+    return np.maximum(0,x)
+
+def ReLU_derivative(x) :
+    return np.where(x >= 0, 1, 0)

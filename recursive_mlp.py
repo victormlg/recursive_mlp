@@ -8,8 +8,9 @@ class MLP :
     start = None
     end = None
     
-    def __init__(self, eta=0.01) :
+    def __init__(self, eta=0.01, multi=False) :
         self.eta = eta
+        self.multi=multi
 
     # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -52,13 +53,17 @@ class MLP :
         return self._forward(tmp.next, z)
     
     def predict(self, x) :
-        return self._forward(self.start, x) > 0.5
+
+        if self.multi : #checks if multiclass or binary classification
+            return np.argmax(self._forward(self.start, x), axis=0)
+        else :
+            return self._forward(self.start, x) >0.5
     
     # fit :
     
     def fit(self, x, t) :
 
-        for i in range(7000) :
+        for i in range(3000) :
             y = self._forward(self.start, x)
 
             delta = self.end.p.activation_derivative(y) * self.end.p.loss_activation_derivative(y,t) 
